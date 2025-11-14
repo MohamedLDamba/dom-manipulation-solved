@@ -38,3 +38,30 @@
  */
 
 // Your code goes here...
+const container = document.querySelector(".cardsContainer");
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+// When the page loads, color all favorite cards red
+favorites.forEach((id) => {
+  const card = document.getElementById(id);
+  if (card) card.style.backgroundColor = "red";
+});
+
+// Add ONE listener to the parent container
+container.addEventListener("click", (e) => {
+  // Make sure we only react to .card clicks, not the container itself
+  if (!e.target.classList.contains("card")) return;
+
+  const card = e.target;
+  const id = card.id;
+
+  if (favorites.includes(id)) {
+    favorites = favorites.filter((fav) => fav !== id);
+    card.style.backgroundColor = "white";
+  } else {
+    favorites.push(id);
+    card.style.backgroundColor = "red";
+  }
+
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+});
